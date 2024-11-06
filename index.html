@@ -59,11 +59,6 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        #log-location {
-            background: #F52D05; /* Red for the Log Location button */
-            color: white;
-        }
-
         #view-mileage {
             background: #3294D0; /* Blue for the View Mileage button */
             color: white;
@@ -112,6 +107,20 @@
             transform: scale(1.05);
             box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
         }
+
+        /* Map input container */
+        #manual-location {
+            margin-top: 20px;
+        }
+
+        #manual-location select {
+            padding: 8px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #DB0A5B;
+            background-color: #fff;
+            color: #333;
+        }
     </style>
 </head>
 <body>
@@ -120,14 +129,20 @@
         <h1>Location & Mileage Tracker</h1>
 
         <!-- Main buttons -->
-        <button id="log-location" class="main-button">Log My Location</button>
         <button id="view-mileage" class="main-button">View Mileage</button>
 
         <!-- Location/map section -->
         <div id="location-map" class="section">
-            <p id="location-message">Attempting to access your location...</p>
+            <p id="location-message">Select your location manually...</p>
             <div id="dummy-map">
-                <img id="map-image" src="" alt="Map" style="width: 100%; height: 100%; object-fit: cover;">
+                <img id="map-image" src="https://storage.googleapis.com/lb-images-us/us/2267515/staticmap.png_webp.webp" alt="Map" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div id="manual-location">
+                <select id="location-select">
+                    <option value="location1">Location 1: 61 Forsyth St SW, Atlanta, GA 30303</option>
+                    <option value="location2">Location 2: 100 Peachtree St, Atlanta, GA 30303</option>
+                    <option value="location3">Location 3: 55 Marietta St NW, Atlanta, GA 30303</option>
+                </select>
             </div>
             <button class="back-button" onclick="toggleVisibility()">Back</button>
         </div>
@@ -154,9 +169,7 @@
     </div>
 
     <script>
-        // JavaScript for handling buttons and geolocation
-        // Select elements
-        const logLocationBtn = document.getElementById("log-location");
+        // JavaScript for handling buttons
         const viewMileageBtn = document.getElementById("view-mileage");
         const locationMap = document.getElementById("location-map");
         const mileageInfo = document.getElementById("mileage-info");
@@ -164,59 +177,25 @@
         const locationMessage = document.getElementById("location-message");
         const mapImage = document.getElementById("map-image");
 
-        // Function to request location and handle results
-        logLocationBtn.onclick = () => {
-            console.log("Attempting to get location...");
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const latitude = position.coords.latitude;
-                        const longitude = position.coords.longitude;
-
-                        // Log success
-                        console.log("Location access granted.");
-                        console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-
-                        // Display the location message with coordinates
-                        locationMessage.innerHTML = `Location logged at: 61 Forsyth St SW, Atlanta, GA 30303, United States; Latitude ${latitude}, Longitude ${longitude}`;
-
-                        // Use Google Maps static API to display map with the current location
-                        mapImage.src = `https://storage.googleapis.com/lb-images-us/us/2267515/staticmap.png_webp.webp`;
-
-                        toggleVisibility("location-map");
-                    },
-                    (error) => {
-                        console.log("Error accessing location:", error);
-                        locationMessage.innerHTML = "Location access denied. Please mark your location on the map.";
-                        mapImage.src = "https://storage.googleapis.com/lb-images-us/us/2267515/staticmap.png_webp.webp"; // Default map image
-                        toggleVisibility("location-map");
-                    }
-                );
-            } else {
-                console.log("Geolocation not supported.");
-                locationMessage.innerHTML = "Geolocation is not supported by this browser.";
-                toggleVisibility("location-map");
-            }
-        };
-
+        // Show mileage info
         viewMileageBtn.onclick = () => {
             toggleVisibility("mileage-info");
         };
 
+        // Show site log
         document.getElementById("view-site-log").onclick = () => {
             toggleVisibility("site-log");
         };
 
+        // Toggle visibility of sections
         function toggleVisibility(showSectionId = "") {
             locationMap.style.display = "none";
             mileageInfo.style.display = "none";
             siteLog.style.display = "none";
-            logLocationBtn.style.display = "block";
             viewMileageBtn.style.display = "block";
 
             if (showSectionId) {
                 document.getElementById(showSectionId).style.display = "block";
-                logLocationBtn.style.display = "none";
                 viewMileageBtn.style.display = "none";
             }
         }
