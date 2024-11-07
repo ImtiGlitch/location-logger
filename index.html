@@ -151,7 +151,7 @@
         <div id="mileage-info" class="section">
             <p>Total Mileage Traveled Today: <strong>12.4 miles</strong></p>
             <p>Total Sites Visited Today: <strong>3</strong></p>
-            <button id="view-site-log" class="back-button">View Site Log</button>
+            <button id="view-site-log" class="back-button" onclick="openSiteLog()">View Site Log</button>
             <button class="back-button" onclick="toggleVisibility()">Back</button>
         </div>
 
@@ -174,18 +174,16 @@
         const locationMap = document.getElementById("location-map");
         const mileageInfo = document.getElementById("mileage-info");
         const siteLog = document.getElementById("site-log");
-        const locationMessage = document.getElementById("location-message");
-        const mapImage = document.getElementById("map-image");
 
         // Show mileage info
         viewMileageBtn.onclick = () => {
             toggleVisibility("mileage-info");
         };
 
-        // Show site log
-        document.getElementById("view-site-log").onclick = () => {
-            toggleVisibility("site-log");
-        };
+        // Open site log image in a new tab
+        function openSiteLog() {
+            window.open("https://i0.wp.com/alizswonderland.com/wp-content/uploads/2021/01/How-plan-travel-itinerary-Google-My-Maps-AlizsWonderland-f.jpg?fit=1000%2C1000&ssl=1", "_blank");
+        }
 
         // Toggle visibility of sections
         function toggleVisibility(showSectionId = "") {
